@@ -9,7 +9,7 @@
 (Installe tout les prérequis)
 
 .\FastAtomicRed.ps1 -Update
-(Met a jour les depots Atomic et regénère le fichier Excel avec les tests par OS)
+(Met à jour les dépots Atomic et regénère le fichier Excel avec les tests par OS)
 
 .\FastAtomicRed.ps1
 (Lance le programme)   
