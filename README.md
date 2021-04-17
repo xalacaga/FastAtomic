@@ -6,12 +6,17 @@
  # Usage
  
  .\FastAtomicRed.ps1 -Install
-Installe tout les prérequis
+(Installe tout les prérequis)
 
 .\FastAtomicRed.ps1 -Update
-Met a jour les depots Atomic et regénère le fichier Excel avec les tests par OS
+(Met a jour les depots Atomic et regénère le fichier Excel avec les tests par OS)
 
 .\FastAtomicRed.ps1
-Lance le programme   
+(Lance le programme)   
+
+# TODO
+- Faire des scenarii de tests automatique pour un ensemble de techniques préalablement choisies ou deja packagées.
+- Exporter dans fichier Excel les resultats (Detection du test dans un SIEM ou autre (OUI/NON)
+
  
 
