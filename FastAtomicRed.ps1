@@ -4,7 +4,7 @@ FastAtomicRed Permet de gagner du temps dans la conduite des tests elabores avec
 .DESCRIPTION
 Il suffit d executer le script et d indiquer le numero de technique et sous technique choisie . le reste est automatique 
 .PARAMETER Install
-Ce parametre install l'ensemble des prerequis (Git et Atomic)
+Ce parametre installe l'ensemble des prerequis (Git et Atomic)
 .PARAMETER Update
 Ce parametre met e jour les depots git atomic
 .EXAMPLE
@@ -26,6 +26,9 @@ Lance le programme
             Ajout Fonctionnalité Excel import/export        
 #>
 
+#### Fonctions
+
+ ##### Fin Fonctions
 
 ####Debut Script Install/update
 
@@ -54,16 +57,17 @@ $depot = (New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').
     Install-Module -Name ImportExcel -RequiredVersion 4.0.8
     exit
  }elseif ($Update.IsPresent) {
-     Write-Host "Mise à jour des dépots" -ForegroundColor Green
-     git -C C:\Atomic\atomic-red-team pull
-     git -C C:\Atomic\invoke-atomicredteam pull
-     Write-Host "Mise à jour de la matrice Mitre (xlsx)" -ForegroundColor Green
-     Remove-Item C:\FastAtomic\matrice.xlsx
-     Import-Csv -Path C:\Atomic\atomic-red-team\atomics\Indexes\Indexes-CSV\windows-index.csv | Export-Excel -Path C:\FastAtomic\matrice.xlsx -AutoSize -TableName MatriceWindows -WorkSheetname 'Matrice Windows'
-     Import-Csv -Path C:\Atomic\atomic-red-team\atomics\Indexes\Indexes-CSV\linux-index.csv | Export-Excel -Path C:\FastAtomic\matrice.xlsx -AutoSize -TableName MatriceLinux -WorkSheetname 'Matrice Linux'
-     Import-Csv -Path C:\Atomic\atomic-red-team\atomics\Indexes\Indexes-CSV\macos-index.csv | Export-Excel -Path C:\FastAtomic\matrice.xlsx -AutoSize -TableName MatriceMACOS -WorkSheetname 'Matrice MacOS'
+    Write-Host "Mise à jour des dépots" -ForegroundColor Green
+    git -C C:\Atomic\atomic-red-team pull
+    git -C C:\Atomic\invoke-atomicredteam pull
+    Write-Host "Mise à jour de la matrice Mitre (xlsx)" -ForegroundColor Green
+    Remove-Item C:\FastAtomic\matrice.xlsx
+    Import-Csv -Path C:\Atomic\atomic-red-team\atomics\Indexes\Indexes-CSV\windows-index.csv | Export-Excel -Path C:\FastAtomic\matrice.xlsx -AutoSize -TableName MatriceWindows -WorkSheetname 'Matrice Windows'
+    Import-Csv -Path C:\Atomic\atomic-red-team\atomics\Indexes\Indexes-CSV\linux-index.csv | Export-Excel -Path C:\FastAtomic\matrice.xlsx -AutoSize -TableName MatriceLinux -WorkSheetname 'Matrice Linux'
+    Import-Csv -Path C:\Atomic\atomic-red-team\atomics\Indexes\Indexes-CSV\macos-index.csv | Export-Excel -Path C:\FastAtomic\matrice.xlsx -AutoSize -TableName MatriceMACOS -WorkSheetname 'Matrice MacOS'
      exit
  }
+ 
 ###Fin script Install/update
 Clear-Host
 Write-host "Initialisation du programme AtomicRed....." -foregroundcolor DarkGreen
@@ -74,6 +78,25 @@ Import-Module "C:\Atomic\invoke-atomicredteam\Invoke-AtomicRedTeam.psd1" -Force
 Import-module ImportExcel
 Set-Location -Path "C:\FastAtomic"
 $PSDefaultParameterValues = @{"Invoke-AtomicTest:PathToAtomicsFolder"="C:\Atomic\atomic-red-team\atomics"}
+#Debut Fonctions
+function Get-Maj {
+    Write-Host "Mise à jour des dépots" -ForegroundColor Green
+    git -C C:\Atomic\atomic-red-team pull
+    git -C C:\Atomic\invoke-atomicredteam pull
+    Write-Host "Mise à jour de la matrice Mitre (xlsx)" -ForegroundColor Green
+    Remove-Item C:\FastAtomic\matrice.xlsx
+    Import-Csv -Path C:\Atomic\atomic-red-team\atomics\Indexes\Indexes-CSV\windows-index.csv | Export-Excel -Path C:\FastAtomic\matrice.xlsx -AutoSize -TableName MatriceWindows -WorkSheetname 'Matrice Windows'
+    Import-Csv -Path C:\Atomic\atomic-red-team\atomics\Indexes\Indexes-CSV\linux-index.csv | Export-Excel -Path C:\FastAtomic\matrice.xlsx -AutoSize -TableName MatriceLinux -WorkSheetname 'Matrice Linux'
+    Import-Csv -Path C:\Atomic\atomic-red-team\atomics\Indexes\Indexes-CSV\macos-index.csv | Export-Excel -Path C:\FastAtomic\matrice.xlsx -AutoSize -TableName MatriceMACOS -WorkSheetname 'Matrice MacOS'
+     
+ }
+ # Fin Fonctions
+$Maj = Read-host "Voulez vous mettre à jour le repository Atomic ?(o/n)"
+
+if ($Maj -eq "o") {
+Get-Maj
+}
+
 $Technique = [string]
 write-host "Pour quel système voulez vous faire les tests ?"
 write-Host "1 - Windows"
@@ -100,7 +123,10 @@ $sess = New-PSSession -HostName $IP -Username $User
 $yes="o"
 Do{
     Write-Host "#################################################" -ForegroundColor Green 
+Do{
 $Technique = read-host -Prompt "Choix de la Technique T(XXXX.XX)"
+$Folder = "C:\Atomic\atomic-red-team\atomics\T$Technique"
+}until (Test-Path -Path $Folder)
 Clear-Host
 if($Technique.Length -igt 0){
         Write-Host "Résume rapide de la technique : T$Technique" -foregroundcolor DarkGreen
@@ -125,7 +151,7 @@ else{
     Write-Host "Vous n'avez pas fait de saisie..."-foregroundcolor Red
     exit
 }
-$num = read-host "Numéro du test (Nombre après le - )" 
+    $num = read-host "Numéro du test (Nombre après le - )"
 
 if($num.Length -igt 0){
     $detail = read-host "Voulez vous un détail complet de la Technique (o/n)?"
