@@ -6,7 +6,7 @@
  # Usage
  
  .\FastAtomicRed.ps1 -Install
-(Installe tout les prérequis)
+(Installe tous les prérequis)
 
 .\FastAtomicRed.ps1 -Update
 (Met à jour les dépots Atomic et regénère le fichier Excel avec les tests par OS)
