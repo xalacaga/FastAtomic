@@ -23,7 +23,9 @@ Lance le programme
     1.0     2021.04.1
             Initial Version
     1.1     2021.04.17
-            Ajout Fonctionnalité Excel import/export        
+            Ajout Fonctionnalité Excel import/export   
+    1.2     2021.08.24
+            Correction bug d'install     
 #>
 
 #### Fonctions
@@ -43,18 +45,20 @@ $depot = (New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').
  if ($Install.IsPresent) {
     Write-Host "Installation des prérequis" -ForegroundColor Blue
      Write-Host "Téléchargement Git For Windows" -ForegroundColor Green
-    Invoke-WebRequest -Uri $sourcegit -OutFile $depot\git.exe
+    #Invoke-WebRequest -Uri $sourcegit -OutFile $depot\git.exe
     Write-Host "Faire l'installation de GIT par defaut"
     Start-Process -FilePath "$depot\git.exe" -Wait
-    Install-Module PowershellGet -Force
+    Install-Module PowershellGet -Scope CurrentUser -Force
+    Install-Module -Name powershell-yaml -Scope CurrentUser -Force
     PowerShellGet\Install-Module posh-git -Scope CurrentUser -Force   
-    Import-Module posh-git
+    Import-Module posh-git -Scope CurrentUser -Force
     Add-PoshGitToProfile
     New-Item -Path c:\Atomic -ItemType Directory
+    New-Item -Path c:\FastAtomic -ItemType Directory
     git clone https://github.com/redcanaryco/atomic-red-team.git c:\Atomic\atomic-red-team
     git clone https://github.com/redcanaryco/invoke-atomicredteam.git c:\Atomic\invoke-atomicredteam
     ##install Module Excel
-    Install-Module -Name ImportExcel -RequiredVersion 4.0.8
+    Install-Module -Name ImportExcel -RequiredVersion 4.0.8 -Scope CurrentUser -Force
     exit
  }elseif ($Update.IsPresent) {
     Write-Host "Mise à jour des dépots" -ForegroundColor Green
