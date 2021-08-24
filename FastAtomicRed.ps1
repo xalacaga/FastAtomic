@@ -45,7 +45,7 @@ $depot = (New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').
  if ($Install.IsPresent) {
     Write-Host "Installation des prérequis" -ForegroundColor Blue
      Write-Host "Téléchargement Git For Windows" -ForegroundColor Green
-    #Invoke-WebRequest -Uri $sourcegit -OutFile $depot\git.exe
+    Invoke-WebRequest -Uri $sourcegit -OutFile $depot\git.exe
     Write-Host "Faire l'installation de GIT par defaut"
     Start-Process -FilePath "$depot\git.exe" -Wait
     Install-Module PowershellGet -Scope CurrentUser -Force
